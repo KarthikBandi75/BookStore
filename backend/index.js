@@ -1,26 +1,19 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import { PORT, mongoDBURL } from './config.js';
 import mongoose from 'mongoose';
-import booksRoute from './routes/booksRoute.js';
+import booksRoute from './routes/Bookroutes.js';
 import cors from 'cors';
+
 const app = express();
 
-app.use(cors()); // This will allow all origins
-
-// Or if you want to limit it to your React frontend:
-app.use(cors({
-  origin: 'http://localhost:5173', // Replace with your React app URL if needed
-}));
-
-
-
-// Middleware for parsing request body
 app.use(express.json());
-
-// Middleware for handling CORS
+app.use(cors());
 
 app.get('/', (req, res) => {
-  res.status(200).send('Welcome to the MERN Stack Tutorial');
+  res.status(200).send('Welcome To MERN Stack Tutorial');
 });
 
 app.use('/books', booksRoute);
@@ -28,11 +21,11 @@ app.use('/books', booksRoute);
 mongoose
   .connect(mongoDBURL)
   .then(() => {
-    console.log('Connected to the database');
+    console.log('App connected to database');
     app.listen(PORT, () => {
-      console.log(`App is running on port ${PORT}`);
+      console.log(`App is listening to port: ${PORT}`);
     });
   })
-  .catch((err) => {
-    console.error('Database connection error:', err);
+  .catch((error) => {
+    console.error('Database connection error:', error);
   });
